@@ -6,16 +6,21 @@ class TasksController < ApplicationController
     @user = current_user
 
     if @user
-    @tasks = @user.tasks.all
+    @tasks = @user.tasks.order("id DESC").where("(waiting is ? or waiting is ?) and (complete is ? or complete is ?)", nil, false, nil, false)
+    @taskwaiting = @user.tasks.where("(waiting is ?) and (complete is ? or complete is ?)", true, nil, false)
+    @taskcompleted = @user.tasks.where(complete: true)  
   else
-    @tasks = Task.all
+    @tasks = Task.order("id DESC").all
+    @taskwaiting = Task.order("id DESC").all
+    @taskcompleted = Task.order("id DESC").all
+
   end
 
 
     @task = Task.new
 
 
-    @taskwaiting = Task.where(waiting: true)
+  
 
     respond_to do |format|
       format.html # index.html.erb
@@ -89,6 +94,39 @@ class TasksController < ApplicationController
     end
   end
 
+  def waiting_toggle
+  @task = Task.find(params[:id])
+  @task.waiting = true
+  @task.save
+
+  redirect_to action: "index"
+  end
+
+  def waiting_toggle_off
+  @task = Task.find(params[:id])
+  @task.waiting = false
+  @task.save
+
+  redirect_to action: "index"
+  end
+
+    def complete_toggle
+  @task = Task.find(params[:id])
+  @task.complete = true
+  @task.save
+
+  redirect_to action: "index"
+  end
+
+ def complete_toggle_off
+  @task = Task.find(params[:id])
+  @task.complete = false
+  @task.waiting = false
+  @task.save
+
+  redirect_to action: "index"
+  end
+
   # DELETE /tasks/1
   # DELETE /tasks/1.json
   def destroy
@@ -100,4 +138,7 @@ class TasksController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+
+
 end

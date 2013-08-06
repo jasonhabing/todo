@@ -11,10 +11,12 @@
 
 <% @tasks.each do |task| %>
   <tr>
-    <td><%= task.description %></td>
-    <td><%= link_to 'Show', task %></td>
-    <td><%= link_to 'Edit', edit_task_path(task) %></td>
-    <td><%= link_to 'Remove', task, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    <td><%= best_in_place task, :description, type: :textarea %></td>
+    <td><%= link_to "Waiting", waiting_toggle_task_path(task), :method => :put %></td>
+    <td><%= link_to "Complete", complete_toggle_task_path(task), :method => :put %></td>
+    <!-- <td><%= link_to 'Show', task %></td> -->
+    <!-- <td><%= link_to 'Edit', edit_task_path(task) %></td> -->
+    <td><%= link_to 'Delete', task, method: :delete, data: { confirm: 'Delete this Todo item?' } %></td>
   </tr>
 <% end %>
 
@@ -24,23 +26,40 @@
 </div>
 
 <div class="container">
+
+
   <h1>Waiting</h1>
 <table class="table">
 
 
-<% @taskwaiting.each do |task| %>
+<% @taskwaiting.order('description').each do |task| %>
+  <tr>
+    <td><%= best_in_place task, :description, type: :textarea %></td>
+    <td><%= link_to "No Longer Waiting", waiting_toggle_off_task_path(task), :method => :put %></td>
+    <td><%= link_to "Complete", complete_toggle_task_path(task), :method => :put %></td>
+    <td><%= link_to 'Delete', task, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+</div>
+
+<div class="container">
+  <h1>Complete</h1>
+<table class="table">
+
+
+<% @taskcompleted.order('description').each do |task| %>
   <tr>
     <td><%= task.description %></td>
-    <td><%= link_to 'Show', task %></td>
-    <td><%= link_to 'Edit', edit_task_path(task) %></td>
+    <td><%= link_to "Not Complete", complete_toggle_off_task_path(task), :method => :put %></td>
     <td><%= link_to 'Remove', task, method: :delete, data: { confirm: 'Are you sure?' } %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
-
-<%= link_to 'New Task', new_task_path %>
 </div>
 
 <% else %>
