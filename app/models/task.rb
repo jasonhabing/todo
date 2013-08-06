@@ -1,6 +1,6 @@
 class Task < ActiveRecord::Base
   attr_accessible :description, :waiting
 
-  belongs_to :user
+  has_many :user
   
 end

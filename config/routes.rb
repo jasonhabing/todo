@@ -16,6 +16,7 @@ Todo::Application.routes.draw do
     end
   end
 
+  match '/waitingfor' => 'tasks#waitingfor'
 
   devise_for :users
 

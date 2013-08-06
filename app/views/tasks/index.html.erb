@@ -5,6 +5,14 @@
 
 <%= render 'form' %>
 
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+  $('a[rel*=facebox]').facebox()
+})
+</script>
+
+<a href="/waitingfor" rel="facebox">This is a test of Javascript pop up</a> 
+
   <h1>Next</h1>
 <table class="table">
 
@@ -12,13 +20,14 @@
 <% @tasks.each do |task| %>
   <tr>
     <td><%= best_in_place task, :description, type: :textarea %></td>
-    <td><%= link_to "Waiting", waiting_toggle_task_path(task), :method => :put %></td>
+    <td><%= link_to "Waiting For Someone", waiting_toggle_task_path(task), :method => :put %></td>
     <td><%= link_to "Complete", complete_toggle_task_path(task), :method => :put %></td>
     <!-- <td><%= link_to 'Show', task %></td> -->
     <!-- <td><%= link_to 'Edit', edit_task_path(task) %></td> -->
-    <td><%= link_to 'Delete', task, method: :delete, data: { confirm: 'Delete this Todo item?' } %></td>
+    <td><%= link_to 'Delete', task, method: :delete %></td>
   </tr>
 <% end %>
+
 
 </table>
 
@@ -37,7 +46,7 @@
     <td><%= best_in_place task, :description, type: :textarea %></td>
     <td><%= link_to "No Longer Waiting", waiting_toggle_off_task_path(task), :method => :put %></td>
     <td><%= link_to "Complete", complete_toggle_task_path(task), :method => :put %></td>
-    <td><%= link_to 'Delete', task, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    <td><%= link_to 'Delete', task, method: :delete %></td>
   </tr>
 <% end %>
 </table>
@@ -54,7 +63,7 @@
   <tr>
     <td><%= task.description %></td>
     <td><%= link_to "Not Complete", complete_toggle_off_task_path(task), :method => :put %></td>
-    <td><%= link_to 'Remove', task, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    <td><%= link_to 'Delete', task, method: :delete %></td>
   </tr>
 <% end %>
 </table>

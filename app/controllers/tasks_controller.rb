@@ -53,6 +53,20 @@ class TasksController < ApplicationController
     end
   end
 
+  def waitingfor
+
+    
+
+    @task = Task.new
+
+    respond_to do |format|
+      format.html # new.html.erb
+      format.json { render json: @task }
+    end
+
+  end
+
+
   # GET /tasks/1/edit
   def edit
     @task = Task.find(params[:id])
@@ -121,7 +135,7 @@ class TasksController < ApplicationController
  def complete_toggle_off
   @task = Task.find(params[:id])
   @task.complete = false
-  @task.waiting = false
+  @task.waiting = false 
   @task.save
 
   redirect_to action: "index"
@@ -138,6 +152,8 @@ class TasksController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+
 
 
 
